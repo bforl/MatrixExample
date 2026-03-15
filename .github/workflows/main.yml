@@ -15,7 +15,7 @@ jobs:
       - name: Generate matrix
         id: generate
         run: |
-          json='{['
+          json='['
           first=true
 
           for i in $(seq 1 8); do
@@ -28,7 +28,7 @@ jobs:
             json+="{\"job_number\":$i}"
           done
 
-          json+="]}"
+          json+="]"
           echo "jobs=$json" >> $GITHUB_OUTPUT
 
   run:
