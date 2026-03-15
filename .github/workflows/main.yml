@@ -5,23 +5,43 @@ on:
   workflow_dispatch: 
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        config:
-          - version: ubuntu-latest
-            scope: 18
-          - version: windows-latest
-            scope: 20
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.generate.outputs.matrix }}
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
-
-      - name: print version
+      - name: Generate matrix with loops
+        id: generate
         run: |
-          echo "version: ${{ matrix.version }}"
-          echo "scope: ${{ matrix.scope }}"
-        
+          json='{"include":['
+          first=true
+
+          for os in ubuntu-latest windows-latest; do
+            for node in 18 20; do
+              if [ "$first" = true ]; then
+                first=false
+              else
+                json+=","
+              fi
+
+              json+="{\"os\":\"$os\",\"node\":$node}"
+            done
+          done
+
+          json+="]}"
+          echo "matrix=$json" >> $GITHUB_OUTPUT
+
+  build:
+    needs: prepare
+    strategy:
+      matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Print matrix state
+        run: |
+          echo "OS: ${{ matrix.os }}"
+          echo "Node: ${{ matrix.node }}"
