@@ -15,21 +15,7 @@ jobs:
       - name: Generate matrix
         id: generate
         run: |
-          json='['
-          first=true
-
-          for i in $(seq 1 8); do
-            if [ "$first" = true ]; then
-              first=false
-            else
-              json+=","
-            fi
-
-            json+="{\"job_number\":$i}"
-          done
-
-          json+="]"
-          echo "jobs=$json" >> $GITHUB_OUTPUT
+          echo "jobs=[1, 2, 3, 4, 5]" >> $GITHUB_OUTPUT
 
   run:
     needs: prepare
@@ -41,4 +27,4 @@ jobs:
 
     steps:
       - name: Print job number
-        run: echo "Running job ${{ matrix.job_number }}"
+        run: echo "Running job ${{ matrix }}"
