@@ -15,7 +15,7 @@ jobs:
       - name: Generate matrix
         id: generate
         run: |
-          json='{"include":['
+          json='{"xx":['
           first=true
 
           for i in $(seq 1 8); do
