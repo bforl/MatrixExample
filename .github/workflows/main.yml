@@ -15,17 +15,16 @@ jobs:
       - name: Generate matrix
         id: generate
         run: |
-          echo "jobs=[1, 2, 3, 4, 5]" >> $GITHUB_OUTPUT
+          echo "jobs=[ { Name: A }, { Name : B }]" >> $GITHUB_OUTPUT
 
   run:
     needs: prepare
 
     strategy:
-      matrix: 
-        color: ${{ fromJson(needs.prepare.outputs.jobs) }}
+      matrix: ${{ fromJson(needs.prepare.outputs.jobs) }}
 
     runs-on: ubuntu-latest
 
     steps:
       - name: Print job number
-        run: echo "Running job ${{ matrix.color }}"
+        run: echo "Running job ${{ matrix.Name }}"
