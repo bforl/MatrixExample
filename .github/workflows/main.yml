@@ -10,8 +10,11 @@ jobs:
 
     strategy:
       matrix:
-        version: [16, 18, 20]
-        scope: ["x", "y", "z", "w"]
+        config:
+          - version: ubuntu-latest
+            scope: 18
+          - version: windows-latest
+            scope: 20
 
     steps:
       - name: Checkout repository
