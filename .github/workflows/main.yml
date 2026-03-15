@@ -9,7 +9,7 @@ jobs:
   prepare:
     runs-on: ubuntu-latest
     outputs:
-      jobs: ${{ steps.generate.outputs.matrix }}
+      jobs: ${{ steps.generate.outputs.jobs }}
 
     steps:
       - name: Generate matrix
