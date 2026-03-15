@@ -12,36 +12,33 @@ jobs:
       matrix: ${{ steps.generate.outputs.matrix }}
 
     steps:
-      - name: Generate matrix with loops
+      - name: Generate matrix
         id: generate
         run: |
           json='{"include":['
           first=true
 
-          for os in ubuntu-latest windows-latest; do
-            for node in 18 20; do
-              if [ "$first" = true ]; then
-                first=false
-              else
-                json+=","
-              fi
+          for i in $(seq 1 100); do
+            if [ "$first" = true ]; then
+              first=false
+            else
+              json+=","
+            fi
 
-              json+="{\"os\":\"$os\",\"node\":$node}"
-            done
+            json+="{\"job_number\":$i}"
           done
 
           json+="]}"
           echo "matrix=$json" >> $GITHUB_OUTPUT
 
-  build:
+  run:
     needs: prepare
+
     strategy:
       matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
 
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Print matrix state
-        run: |
-          echo "OS: ${{ matrix.os }}"
-          echo "Node: ${{ matrix.node }}"
+      - name: Print job number
+        run: echo "Running job ${{ matrix.job_number }}"
