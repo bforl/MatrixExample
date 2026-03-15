@@ -11,6 +11,7 @@ jobs:
     strategy:
       matrix:
         version: [16, 18, 20]
+        scope: ["x", "y", "z", "w"]
 
     steps:
       - name: Checkout repository
@@ -18,5 +19,6 @@ jobs:
 
       - name: print version
         run: |
-          echo "Node version: ${{ matrix.version }}"
+          echo "version: ${{ matrix.version }}"
+          echo "scope: ${{ matrix.scope }}"
         
