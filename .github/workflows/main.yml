@@ -21,10 +21,11 @@ jobs:
     needs: prepare
 
     strategy:
-      matrix: ${{ fromJson(needs.prepare.outputs.jobs) }}
+      matrix: 
+        color: ${{ fromJson(needs.prepare.outputs.jobs) }}
 
     runs-on: ubuntu-latest
 
     steps:
       - name: Print job number
-        run: echo "Running job ${{ matrix }}"
+        run: echo "Running job ${{ matrix.color }}"
