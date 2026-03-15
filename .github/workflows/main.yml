@@ -15,7 +15,7 @@ jobs:
       - name: Generate matrix
         id: generate
         run: |
-          echo 'jobs=[ { "Name": "A" }, { "Name" : "B" }]' >> $GITHUB_OUTPUT
+          echo 'jobs={"include": [ { "Name": "A" }, { "Name" : "B" }]}' >> $GITHUB_OUTPUT
 
   run:
     needs: prepare
